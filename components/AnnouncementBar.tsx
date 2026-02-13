@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { loadConfig, defaultConfig } from "@/lib/devStore";
+import { useMemo } from "react";
+import { useStoreData } from "@/lib/useStoreData";
 
 export default function AnnouncementBar() {
-  const [text, setText] = useState<string>(defaultConfig.announcement);
-
-  useEffect(() => {
-    const cfg = loadConfig();
-    setText(cfg.announcement);
-  }, []);
+  const { state } = useStoreData();
+  const text = state.config.announcement;
 
   const line = useMemo(() => `${text}  •  ${text}  •  ${text}`, [text]);
 

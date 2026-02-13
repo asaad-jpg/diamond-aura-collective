@@ -7,6 +7,8 @@ import { ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import CartDrawer from "@/components/cartDrawer";
+import { useStoreData } from "@/lib/useStoreData";
+import { useCart } from "@/lib/cartStore";
 
 function NavItem({ href, label, onClick }: { href: string; label: string; onClick?: () => void }) {
   const pathname = usePathname();
@@ -33,13 +35,16 @@ function NavItem({ href, label, onClick }: { href: string; label: string; onClic
 }
 
 export default function Navbar() {
+  const { state } = useStoreData();
+  const cart = useCart(state.products);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
     const onOpenCart = () => setCartOpen(true);
-    window.addEventListener("open-cart", onOpenCart as any);
-    return () => window.removeEventListener("open-cart", onOpenCart as any);
+    const listener = onOpenCart as EventListener;
+    window.addEventListener("open-cart", listener);
+    return () => window.removeEventListener("open-cart", listener);
   }, []);
 
   useEffect(() => {
@@ -136,7 +141,15 @@ export default function Navbar() {
         </AnimatePresence>
       </header>
 
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartDrawer
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        onRemove={cart.remove}
+        onSetQty={cart.setQty}
+        onSetSize={cart.setSize}
+        lines={cart.lines}
+        subtotalTRY={cart.subtotalTRY}
+      />
     </>
   );
 }

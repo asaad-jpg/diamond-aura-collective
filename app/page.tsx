@@ -2,20 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
-import { products as seedProducts, type Product } from "@/lib/products";
-import { loadProducts } from "@/lib/devStore";
 import { formatPrice } from "@/lib/currency";
+import { useStoreData } from "@/lib/useStoreData";
 
 export default function Home() {
-  const [items, setItems] = useState<Product[]>(seedProducts);
-
-  useEffect(() => {
-    const stored = loadProducts(seedProducts);
-    setItems(stored.filter((p) => p.category === "Hoodies"));
-  }, []);
-
+  const { state } = useStoreData();
+  const items = state.products.filter((p) => p.category === "Hoodies");
   const featured = useMemo(() => items.slice(0, 4), [items]);
 
   return (

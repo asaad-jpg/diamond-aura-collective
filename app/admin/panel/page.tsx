@@ -40,7 +40,8 @@ export default function AdminPanelPage() {
     setOk(null);
     setLoading(true);
     try {
-      const res = await fetch("/api/store", { cache: "no-store" });
+      const res = await fetch("/api/store");
+      if (!res.ok) throw new Error("Failed to fetch");
       const data = (await res.json()) as StoreState;
       setState(data);
     } catch {
@@ -52,7 +53,7 @@ export default function AdminPanelPage() {
 
   useEffect(() => {
     fetchState();
-  }, []);
+  }, [token]);
 
   const canEditAll = role === "admin";
   const canEditPrices = role === "pricer" || role === "admin";
@@ -203,11 +204,10 @@ export default function AdminPanelPage() {
               <input
                 disabled={!canEditAll}
                 value={state.config.announcement}
-                onChange={(e) =>
-                  setState((s) =>
-                    s ? { ...s, config: { ...s.config, announcement: e.target.value } } : s
-                  )
-                }
+                onChange={(e) => {
+                  if (!state) return;
+                  setState({ ...state, config: { ...state.config, announcement: e.target.value } });
+                }}
                 className="w-full rounded-2xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none disabled:opacity-50"
               />
 
@@ -215,11 +215,22 @@ export default function AdminPanelPage() {
               <input
                 disabled={!canEditAll}
                 value={state.config.instagramProfileUrl}
-                onChange={(e) =>
-                  setState((s) =>
-                    s ? { ...s, config: { ...s.config, instagramProfileUrl: e.target.value } } : s
-                  )
-                }
+                onChange={(e) => {
+                  if (!state) return;
+                  setState({ ...state, config: { ...state.config, instagramProfileUrl: e.target.value } });
+                }}
+                className="w-full rounded-2xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none disabled:opacity-50"
+              />
+
+              <label className="text-xs text-white/60">USD Rate (TRY per 1 USD)</label>
+              <input
+                type="number"
+                disabled={!canEditAll}
+                value={state.config.usdRate}
+                onChange={(e) => {
+                  if (!state) return;
+                  setState({ ...state, config: { ...state.config, usdRate: Number(e.target.value || 0) } });
+                }}
                 className="w-full rounded-2xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none disabled:opacity-50"
               />
             </div>
@@ -271,16 +282,13 @@ export default function AdminPanelPage() {
                           value={String(p.compareAtTRY ?? p.priceTRY)}
                           onChange={(e) => {
                             const v = Number(e.target.value || 0);
-                            setState((s) => {
-                              if (!s) return s;
-                              const next = [...s.products];
-                              next[idx] = {
-                                ...next[idx],
-                                compareAtTRY: Number.isFinite(v) ? v : next[idx].compareAtTRY,
-                                // keep priceTRY as-is; server will compute for pricer
-                              };
-                              return { ...s, products: next };
-                            });
+                            if (!state) return;
+                            const next = [...state.products];
+                            next[idx] = {
+                              ...next[idx],
+                              compareAtTRY: Number.isFinite(v) ? v : next[idx].compareAtTRY,
+                            };
+                            setState({ ...state, products: next });
                           }}
                           className="w-full rounded-2xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none disabled:opacity-50"
                         />
@@ -299,15 +307,13 @@ export default function AdminPanelPage() {
                             value={String(p.priceTRY)}
                             onChange={(e) => {
                               const v = Number(e.target.value || 0);
-                              setState((s) => {
-                                if (!s) return s;
-                                const next = [...s.products];
-                                next[idx] = {
-                                  ...next[idx],
-                                  priceTRY: Number.isFinite(v) ? v : next[idx].priceTRY,
-                                };
-                                return { ...s, products: next };
-                              });
+                              if (!state) return;
+                              const next = [...state.products];
+                              next[idx] = {
+                                ...next[idx],
+                                priceTRY: Number.isFinite(v) ? v : next[idx].priceTRY,
+                              };
+                              setState({ ...state, products: next });
                             }}
                             className="w-full rounded-2xl border border-white/15 bg-black/40 px-4 py-3 text-sm text-white outline-none disabled:opacity-50"
                           />

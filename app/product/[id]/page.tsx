@@ -5,11 +5,10 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 
-import { products as seedProducts, type Product } from "@/lib/products";
-import { loadProducts } from "@/lib/devStore";
 import { formatPrice } from "@/lib/currency";
 import type { Size } from "@/lib/cartTypes";
 import { useCart } from "@/lib/cartStore";
+import { useStoreData } from "@/lib/useStoreData";
 
 const SIZES: Size[] = ["S", "M", "L", "XL", "XXL"];
 const IG_PROFILE = "https://www.instagram.com/shopdiamondaura/";
@@ -22,19 +21,15 @@ function safeId(v: unknown): string {
 
 export default function ProductPage() {
   const params = useParams();
-  const id = safeId((params as any)?.id);
+  const id = safeId((params as Record<string, unknown>)?.id);
 
-  const [items, setItems] = useState<Product[]>(seedProducts);
+  const { state: storeState } = useStoreData();
+  const items = storeState.products;
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [size, setSize] = useState<Size>("M");
 
   // IMPORTANT: use the same products array the page uses (so ids match)
   const cart = useCart(items);
-
-  useEffect(() => {
-    const stored = loadProducts(seedProducts) as Product[];
-    setItems(stored);
-  }, []);
 
   const product = useMemo(() => items.find((p) => p.id === id), [items, id]);
 

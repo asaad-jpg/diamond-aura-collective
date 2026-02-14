@@ -83,7 +83,7 @@ export default function AdminPanelPage() {
         return;
       }
 
-      setOk("Saved globally ✅");
+      setOk("✅ Saved globally - Discord notified 🎉");
       await fetchState();
     } catch {
       setErr("Network error");

@@ -1,0 +1,25 @@
+name: Redeploy on Store Update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "store-data.json"
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Redeploy to Vercel
+        run: |
+          curl -X POST "https://api.vercel.com/v14/deployments" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "diamond-aura-collective",
+              "gitSource": {
+                "type": "github",
+                "repo": "asaad-jpg/diamond-aura-collective",
+                "ref": "main"
+              }
+            }'

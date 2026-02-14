@@ -1,10 +1,10 @@
-import { get } from "@vercel/edge-config";
 import { seedState, type StoreState } from "@/lib/storeSeed";
+import { existsSync, readFileSync, writeFileSync } from "fs";
+import { join } from "path";
+import { spawn } from "child_process";
 
-const KEY = "diamond-aura-state";
-
-// In-memory cache for development
-let memoryCache: StoreState | null = null;
+const STORE_FILE = join(process.cwd(), "store-data.json");
+const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK_URL;
 
 function isStoreState(v: unknown): v is StoreState {
   if (!v || typeof v !== "object") return false;
@@ -16,74 +16,200 @@ function isStoreState(v: unknown): v is StoreState {
   return true;
 }
 
-// READ (global) - try Edge Config first, then memory cache, then seed
-export async function getState(): Promise<StoreState> {
-  // Try memory cache first (fastest for local dev)
-  if (memoryCache) {
-    return memoryCache;
-  }
-
-  try {
-    // Try to read from Edge Config (production)
-    const data = (await get(KEY)) as unknown;
-    if (isStoreState(data)) {
-      memoryCache = data;
-      return data;
-    }
-  } catch {
-    // Edge Config read failed, continue to fallback
-  }
-
-  // Return seed as final fallback
-  memoryCache = seedState;
-  return seedState;
+// Track changes for Discord notification
+interface PriceChange {
+  id: string;
+  name: string;
+  oldPrice: number;
+  newPrice: number;
+  oldCompareAt?: number;
+  newCompareAt?: number;
 }
 
-// WRITE (global) - try Edge Config, always cache in memory
-export async function setState(next: StoreState): Promise<void> {
-  // Always cache in memory (for local dev)
-  memoryCache = next;
+function compareStates(oldState: StoreState, newState: StoreState): PriceChange[] {
+  const changes: PriceChange[] = [];
 
-  const edgeConfigUrl = process.env.EDGE_CONFIG;
+  const oldProductMap = new Map(oldState.products.map((p) => [p.id, p]));
+  const newProductMap = new Map(newState.products.map((p) => [p.id, p]));
 
-  if (!edgeConfigUrl) {
-    console.log("ℹ️  EDGE_CONFIG not set. Changes saved locally only.");
+  for (const newProduct of newState.products) {
+    const oldProduct = oldProductMap.get(newProduct.id);
+    if (oldProduct) {
+      if (
+        oldProduct.priceTRY !== newProduct.priceTRY ||
+        oldProduct.compareAtTRY !== newProduct.compareAtTRY
+      ) {
+        changes.push({
+          id: newProduct.id,
+          name: newProduct.name,
+          oldPrice: oldProduct.priceTRY,
+          newPrice: newProduct.priceTRY,
+          oldCompareAt: oldProduct.compareAtTRY,
+          newCompareAt: newProduct.compareAtTRY,
+        });
+      }
+    }
+  }
+
+  return changes;
+}
+
+// Send Discord notification
+async function sendDiscordNotification(changes: PriceChange[], isAnnouncement?: string) {
+  if (!DISCORD_WEBHOOK) {
+    console.log("ℹ️  DISCORD_WEBHOOK_URL not set, skipping notification");
     return;
   }
 
   try {
-    // Try to write to Edge Config (production)
-    const url = new URL(edgeConfigUrl);
-    const edgeConfigId = url.pathname.split("/").pop();
-    const token = url.searchParams.get("token");
+    let content = "";
+    let color = 3447003; // Blue
 
-    if (!edgeConfigId || !token) {
-      console.warn("⚠️  Invalid EDGE_CONFIG format");
+    if (isAnnouncement) {
+      content = `🎤 **Announcement Updated**\n\n"${isAnnouncement}"`;
+      color = 16776960; // Yellow
+    } else if (changes.length === 0) {
+      return; // No changes to announce
+    } else {
+      content =
+        changes.length === 1
+          ? `💰 **1 Price Updated**`
+          : `💰 **${changes.length} Prices Updated**`;
+
+      const embeds = [
+        {
+          title: content,
+          color,
+          fields: changes.slice(0, 24).map((c) => {
+            const oldStr = `${c.oldPrice} TRY`;
+            const newStr = `${c.newPrice} TRY`;
+            const diff = c.newPrice - c.oldPrice;
+            const arrow = diff > 0 ? "📈" : diff < 0 ? "📉" : "➡️";
+            return {
+              name: `${arrow} ${c.name}`,
+              value: `\`${oldStr}\` → \`${newStr}\``,
+              inline: true,
+            };
+          }),
+          footer: {
+            text: `Updated at ${new Date().toLocaleString()}`,
+          },
+          timestamp: new Date().toISOString(),
+        },
+      ];
+
+      await fetch(DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ embeds }),
+      });
+      console.log("✅ Sent Discord notification");
       return;
     }
 
-    const res = await fetch(`https://api.vercel.com/v1/edge-config/${edgeConfigId}/items`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
+    // For announcements
+    await fetch(DISCORD_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        items: [{ operation: "upsert", key: KEY, value: next }],
+        embeds: [
+          {
+            title: content,
+            color,
+            timestamp: new Date().toISOString(),
+          },
+        ],
       }),
     });
+    console.log("✅ Sent Discord notification");
+  } catch (error) {
+    console.warn("⚠️  Failed to send Discord notification:", (error as Error).message);
+  }
+}
 
-    if (res.ok) {
-      console.log("✅ Saved to Vercel Edge Config");
-      return;
+// Non-blocking async git push
+function asyncGitPush() {
+  try {
+    const child = spawn("git", ["push", "origin", "main"], {
+      cwd: process.cwd(),
+      detached: true,
+      stdio: "pipe",
+    });
+    child.unref();
+  } catch (e) {
+    // Silently fail
+  }
+}
+
+// READ - Load from JSON file or seed
+export async function getState(): Promise<StoreState> {
+  if (existsSync(STORE_FILE)) {
+    try {
+      const buffer = readFileSync(STORE_FILE);
+      const jsonString = buffer.toString("utf-8").replace(/^\uFEFF/, ""); // Remove BOM
+      const data = JSON.parse(jsonString) as unknown;
+
+      if (isStoreState(data)) {
+        return data;
+      }
+    } catch (error) {
+      console.warn("⚠️  Failed to parse store-data.json:", (error as Error).message);
+    }
+  }
+
+  return seedState;
+}
+
+// WRITE - Save to file immediately with Discord notifications
+export async function setState(next: StoreState): Promise<void> {
+  try {
+    // Get current state to detect changes
+    let oldState = seedState;
+    if (existsSync(STORE_FILE)) {
+      try {
+        const buffer = readFileSync(STORE_FILE);
+        const jsonString = buffer.toString("utf-8").replace(/^\uFEFF/, "");
+        const data = JSON.parse(jsonString) as unknown;
+        if (isStoreState(data)) {
+          oldState = data;
+        }
+      } catch {
+        // Use seed if parse fails
+      }
     }
 
-    // If auth fails, just log and continue with memory cache
-    const body = await res.json().catch(() => ({})) as Record<string, unknown>;
-    console.warn(
-      `⚠️  Edge Config authentication failed. Using local memory storage only. Details: ${JSON.stringify(body)}`
-    );
+    // Detect changes
+    const priceChanges = compareStates(oldState, next);
+    const announcementChanged = oldState.config.announcement !== next.config.announcement;
+
+    // Write file immediately
+    const jsonContent = JSON.stringify(next, null, 2) + "\n";
+    writeFileSync(STORE_FILE, jsonContent, "utf-8");
+    console.log("✅ Saved to store-data.json");
+
+    // Send Discord notifications
+    if (priceChanges.length > 0) {
+      await sendDiscordNotification(priceChanges);
+    }
+    if (announcementChanged) {
+      await sendDiscordNotification([], next.config.announcement);
+    }
+
+    // Git commit and push (async)
+    try {
+      const { execSync } = await import("child_process");
+      execSync("git add store-data.json", { cwd: process.cwd(), stdio: "pipe" });
+      execSync('git commit -m "Auto: Update from admin panel"', {
+        cwd: process.cwd(),
+        stdio: "pipe",
+      });
+      console.log("🚀 Committing to GitHub...");
+      asyncGitPush();
+    } catch (gitError) {
+      console.warn("⚠️  Git commit skipped - likely no changes");
+    }
   } catch (error) {
-    console.warn("⚠️  Could not reach Edge Config. Using local memory storage only.", error);
+    console.error("❌ Failed to save:", (error as Error).message);
+    throw new Error("Could not save prices");
   }
 }

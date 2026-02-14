@@ -4,7 +4,7 @@
       "id": "green-graphic-hoodie",
       "name": "Emerald Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 777,
+      "priceTRY": 550,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
       "featured": true
@@ -13,7 +13,7 @@
       "id": "black-graphic-hoodie",
       "name": "Black Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1450,
+      "priceTRY": 650,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1512990046430-cd271d58d938?w=800&q=80",
       "featured": true
@@ -22,7 +22,7 @@
       "id": "white-graphic-hoodie",
       "name": "White Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1599,
+      "priceTRY": 750,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
       "featured": false
@@ -46,7 +46,7 @@
     }
   ],
   "config": {
-    "announcement": "Limited Time Sale - 40% OFF!",
+    "announcement": "MEGA SALE - UP TO 50% OFF!",
     "usdRate": 34.5
   }
 }

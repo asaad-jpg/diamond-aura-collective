@@ -4,7 +4,7 @@
       "id": "green-graphic-hoodie",
       "name": "Emerald Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1340,
+      "priceTRY": 999,
       "compareAtTRY": 2000,
       "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
       "featured": true
@@ -47,6 +47,6 @@
   ],
   "config": {
     "announcement": "MEGA SALE - UP TO 50% OFF!",
-    "usdRate": 34.5
+    "usdRate": 35
   }
 }

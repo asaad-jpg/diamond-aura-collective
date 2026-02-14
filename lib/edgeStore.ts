@@ -62,66 +62,59 @@ async function sendDiscordNotification(changes: PriceChange[], isAnnouncement?: 
   }
 
   try {
-    let content = "";
-    let color = 3447003; // Blue
-
     if (isAnnouncement) {
-      content = `🎤 **Announcement Updated**\n\n"${isAnnouncement}"`;
-      color = 16776960; // Yellow
-    } else if (changes.length === 0) {
-      return; // No changes to announce
-    } else {
-      content =
-        changes.length === 1
-          ? `💰 **1 Price Updated**`
-          : `💰 **${changes.length} Prices Updated**`;
-
-      const embeds = [
-        {
-          title: content,
-          color,
-          fields: changes.slice(0, 24).map((c) => {
-            const oldStr = `${c.oldPrice} TRY`;
-            const newStr = `${c.newPrice} TRY`;
-            const diff = c.newPrice - c.oldPrice;
-            const arrow = diff > 0 ? "📈" : diff < 0 ? "📉" : "➡️";
-            return {
-              name: `${arrow} ${c.name}`,
-              value: `\`${oldStr}\` → \`${newStr}\``,
-              inline: true,
-            };
-          }),
-          footer: {
-            text: `Updated at ${new Date().toLocaleString()}`,
-          },
-          timestamp: new Date().toISOString(),
-        },
-      ];
-
+      // Announcement notification
       await fetch(DISCORD_WEBHOOK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ embeds }),
+        body: JSON.stringify({
+          embeds: [
+            {
+              title: "🎤 Announcement Updated",
+              description: `"${isAnnouncement}"`,
+              color: 16776960, // Yellow
+              timestamp: new Date().toISOString(),
+            },
+          ],
+        }),
       });
-      console.log("✅ Sent Discord notification");
+      console.log("✅ Sent Discord announcement notification");
       return;
     }
 
-    // For announcements
+    if (changes.length === 0) {
+      return; // No changes
+    }
+
+    // Price change notifications
+    const embeds = [
+      {
+        title: changes.length === 1 ? "💰 1 Price Updated" : `💰 ${changes.length} Prices Updated`,
+        color: 3447003, // Blue
+        fields: changes.slice(0, 24).map((c) => {
+          const oldStr = `${c.oldPrice} TRY`;
+          const newStr = `${c.newPrice} TRY`;
+          const diff = c.newPrice - c.oldPrice;
+          const arrow = diff > 0 ? "📈" : diff < 0 ? "📉" : "➡️";
+          return {
+            name: `${arrow} ${c.name}`,
+            value: `\`${oldStr}\` → \`${newStr}\``,
+            inline: true,
+          };
+        }),
+        footer: {
+          text: `Updated at ${new Date().toLocaleString()}`,
+        },
+        timestamp: new Date().toISOString(),
+      },
+    ];
+
     await fetch(DISCORD_WEBHOOK, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        embeds: [
-          {
-            title: content,
-            color,
-            timestamp: new Date().toISOString(),
-          },
-        ],
-      }),
+      body: JSON.stringify({ embeds }),
     });
-    console.log("✅ Sent Discord notification");
+    console.log("✅ Sent Discord price notification");
   } catch (error) {
     console.warn("⚠️  Failed to send Discord notification:", (error as Error).message);
   }

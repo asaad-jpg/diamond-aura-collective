@@ -97,7 +97,7 @@ export default function ProductPage() {
               <>
                 <Image
                   src={mainImg}
-                  alt={product.name}
+                  alt={product.name || "Product image"}
                   fill
                   className="object-cover"
                   priority

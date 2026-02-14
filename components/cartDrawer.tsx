@@ -84,7 +84,7 @@ export default function CartDrawer({
                           <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-white/10 bg-black/30">
                             <Image
                               src={l.product.images?.[0] || "/favicon.ico"}
-                              alt={l.product.name}
+                              alt={l.product.name || "Product image"}
                               fill
                               className="object-cover"
                               unoptimized

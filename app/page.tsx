@@ -70,7 +70,7 @@ export default function Home() {
                 <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-black/30">
                   <Image
                     src={p.images?.[0] || "/favicon.ico"}
-                    alt={p.name}
+                    alt={p.name || "Product image"}
                     fill
                     className="object-cover"
                     unoptimized

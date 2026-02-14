@@ -4,7 +4,7 @@
       "id": "green-graphic-hoodie",
       "name": "Emerald Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1111,
+      "priceTRY": 899,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
       "featured": true
@@ -22,7 +22,7 @@
       "id": "white-graphic-hoodie",
       "name": "White Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1200,
+      "priceTRY": 1599,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
       "featured": false

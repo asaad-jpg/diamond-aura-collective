@@ -134,23 +134,30 @@ function asyncGitPush() {
   }
 }
 
-// READ - Load from JSON file or seed
+// READ - Load from JSON file ONLY
+// CRITICAL: Never use seedState for pricing - only use store-data.json
 export async function getState(): Promise<StoreState> {
-  if (existsSync(STORE_FILE)) {
-    try {
-      const buffer = readFileSync(STORE_FILE);
-      const jsonString = buffer.toString("utf-8").replace(/^\uFEFF/, ""); // Remove BOM
-      const data = JSON.parse(jsonString) as unknown;
-
-      if (isStoreState(data)) {
-        return data;
-      }
-    } catch (error) {
-      console.warn("⚠️  Failed to parse store-data.json:", (error as Error).message);
-    }
+  if (!existsSync(STORE_FILE)) {
+    console.error("❌ CRITICAL: store-data.json not found! Using placeholder seed data.");
+    return seedState;
   }
 
-  return seedState;
+  try {
+    const buffer = readFileSync(STORE_FILE);
+    const jsonString = buffer.toString("utf-8").replace(/^\uFEFF/, ""); // Remove BOM
+    const data = JSON.parse(jsonString) as unknown;
+
+    if (isStoreState(data)) {
+      console.log("✅ Loaded pricing from store-data.json");
+      return data;
+    }
+
+    console.error("❌ store-data.json is invalid format, using seed");
+    return seedState;
+  } catch (error) {
+    console.error("❌ Failed to read store-data.json:", (error as Error).message);
+    return seedState;
+  }
 }
 
 // WRITE - Save to file immediately with Discord notifications

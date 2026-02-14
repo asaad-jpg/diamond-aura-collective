@@ -1,13 +1,8 @@
 {
   "products": [
     {
-      "images": [
-        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.49.28_AM_wg7elj.jpg"
-      ],
-      "category": "Hoodies",
-      "priceTRY": 1500,
-      "id": "green-graphic-hoodie",
-      "name": "Emerald Graphic Hoodie"
+      "id": "test",
+      "priceTRY": 100
     }
   ],
   "config": {

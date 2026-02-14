@@ -4,8 +4,8 @@
       "id": "green-graphic-hoodie",
       "name": "Emerald Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 550,
-      "compareAtTRY": 1800,
+      "priceTRY": 1340,
+      "compareAtTRY": 2000,
       "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
       "featured": true
     },
@@ -13,7 +13,7 @@
       "id": "black-graphic-hoodie",
       "name": "Black Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 650,
+      "priceTRY": 1206,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1512990046430-cd271d58d938?w=800&q=80",
       "featured": true
@@ -22,7 +22,7 @@
       "id": "white-graphic-hoodie",
       "name": "White Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 750,
+      "priceTRY": 1206,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
       "featured": false
@@ -31,7 +31,7 @@
       "id": "purple-graphic-hoodie",
       "name": "Purple Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1200,
+      "priceTRY": 1206,
       "compareAtTRY": 1800,
       "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
       "featured": false

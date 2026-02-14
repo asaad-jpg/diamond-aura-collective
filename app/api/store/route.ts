@@ -58,22 +58,27 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = (await req.json().catch(() => null)) as StoreState | null;
-    if (!body || !Array.isArray(body.products) || !body.config) {
-      return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+    const body = (await req.json().catch(() => null)) as any;
+    if (!body || !Array.isArray(body.products)) {
+      return NextResponse.json({ error: "Invalid payload - missing products array" }, { status: 400 });
     }
 
-    const next = role === "pricer" ? applyPricerRules(body) : body;
+    // Merge with existing state - keep config if not provided
+    const currentState = await getState();
+    const next: StoreState = {
+      products: body.products,
+      config: body.config || currentState.config,
+    };
 
-    await setState(next);
+    const finalState = role === "pricer" ? applyPricerRules(next) : next;
+
+    await setState(finalState);
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     return NextResponse.json(
       {
         error: "PUT failed",
         details: e?.message ?? String(e),
-        hint:
-          "Usually missing EDGE_CONFIG_ID / VERCEL_API_TOKEN, or server not restarted after .env.local changes.",
       },
       { status: 500 }
     );

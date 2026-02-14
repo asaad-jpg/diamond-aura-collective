@@ -1,4 +1,4 @@
-export type Category = "Hoodies";
+export type Category = "Hoodies" | "Limited";
 
 export type Product = {
   id: string;
@@ -6,15 +6,17 @@ export type Product = {
   category: Category;
   priceTRY: number;
   compareAtTRY?: number;
-  description: string;
-  images: string[];
+  description?: string;
+  image: string;
+  images?: string[];
   badges?: Array<"New" | "Free Shipping" | "Deal" | "Limited">;
+  featured?: boolean;
 };
 
 export type DevConfig = {
   announcement: string;
   usdRate: number;
-  instagramProfileUrl: string;
+  instagramProfileUrl?: string;
 };
 
 export type StoreState = {

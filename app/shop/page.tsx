@@ -10,7 +10,7 @@ import { useStoreData } from "@/lib/useStoreData";
 export default function ShopPage() {
   const { state } = useStoreData();
   const items = useMemo(
-    () => state.products.filter((p) => p.category === "Hoodies"),
+    () => state.products,
     [state.products]
   );
 
@@ -18,7 +18,7 @@ export default function ShopPage() {
     <main className="mx-auto max-w-6xl px-4 py-10">
       <div className="mb-10">
         <h1 className="text-3xl font-semibold text-white">Shop</h1>
-        <p className="mt-2 text-white/70">All hoodies from Diamond Aura Collective</p>
+        <p className="mt-2 text-white/70">All products from Diamond Aura Collective</p>
       </div>
 
       {items.length === 0 ? (
@@ -35,7 +35,7 @@ export default function ShopPage() {
             >
               <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-black/30">
                 <Image
-                  src={p.images?.[0] || "/favicon.ico"}
+                  src={p.image || "/favicon.ico"}
                   alt={p.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"

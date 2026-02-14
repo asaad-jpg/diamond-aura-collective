@@ -1,4 +1,4 @@
-export type Category = "Hoodies";
+export type Category = "Hoodies" | "Limited";
 
 export type Product = {
   id: string;
@@ -6,9 +6,11 @@ export type Product = {
   category: Category;
   priceTRY: number;          // the REAL price shown
   compareAtTRY?: number;     // crossed-out "original" price
-  description: string;
-  images: string[];
+  description?: string;
+  image?: string;            // single image (from store-data.json)
+  images?: string[];         // array of images (backwards compat)
   badges?: Array<"New" | "Free Shipping" | "Deal" | "Limited">;
+  featured?: boolean;
 };
 
 const IG_ORDER_NOTE = "Premium hoodie. Limited drop. Order via Instagram.";

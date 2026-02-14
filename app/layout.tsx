@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 
@@ -18,6 +19,7 @@ export default function RootLayout({
         <AnnouncementBar />
         <Navbar />
         {children}
+        <Analytics />
       </body>
     </html>
   );

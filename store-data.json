@@ -4,49 +4,168 @@
       "id": "green-graphic-hoodie",
       "name": "Emerald Graphic Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1340,
-      "compareAtTRY": 9999,
-      "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.49.28_AM_wg7elj.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587567/WhatsApp_Image_2026-02-09_at_12.49.28_AM_1_qhch54.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
       "featured": true
     },
     {
-      "id": "black-graphic-hoodie",
-      "name": "Black Graphic Hoodie",
+      "id": "tokyo-car-hoodie-black",
+      "name": "Tokyo Car Hoodie (Black)",
       "category": "Hoodies",
-      "priceTRY": 1675,
-      "compareAtTRY": 2500,
-      "image": "https://images.unsplash.com/photo-1512990046430-cd271d58d938?w=800&q=80",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587536/WhatsApp_Image_2026-02-09_at_12.48.55_AM_pxyvvy.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587536/WhatsApp_Image_2026-02-09_at_12.48.55_AM_1_qkyb3q.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
       "featured": true
     },
     {
-      "id": "white-graphic-hoodie",
-      "name": "White Graphic Hoodie",
+      "id": "washed-grey-gym-hoodie",
+      "name": "Washed Grey Gym Hoodie",
       "category": "Hoodies",
-      "priceTRY": 1206,
-      "compareAtTRY": 1800,
-      "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587518/WhatsApp_Image_2026-02-09_at_12.48.51_AM_fhya37.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.48.51_AM_1_zgzzdi.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
       "featured": false
     },
     {
-      "id": "purple-graphic-hoodie",
-      "name": "Purple Graphic Hoodie",
+      "id": "drake-hoodie-black",
+      "name": "Drake Hoodie (Black)",
       "category": "Hoodies",
-      "priceTRY": 1206,
-      "compareAtTRY": 1800,
-      "image": "https://images.unsplash.com/photo-1556821552-5f06b5991ce1?w=800&q=80",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.48.00_AM_tepziq.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
       "featured": false
     },
     {
-      "id": "christian-cross-hoodie",
-      "name": "Christian Cross Hoodie",
-      "category": "Limited",
-      "priceTRY": 1500,
-      "image": "https://images.unsplash.com/photo-1552062407-c3a3a6e6b2f5?w=800&q=80",
+      "id": "dark-rose-hoodie-black",
+      "name": "Dark Rose Hoodie (Black)",
+      "category": "Hoodies",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.49.54_AM_1_ieshon.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.49.54_AM_kkwu7e.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "christian-cross-hoodie-grey",
+      "name": "Christian Cross Zip Hoodie",
+      "category": "Hoodies",
+      "priceTRY": 2500,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587446/WhatsApp_Image_2026-02-09_at_12.47.55_AM_mdisyd.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770587447/WhatsApp_Image_2026-02-09_at_12.47.55_AM_1_nrgdhp.jpg"
+      ],
+      "badges": ["New", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "cat-graphic-hoodie",
+      "name": "Cat Graphic Hoodie",
+      "category": "Hoodies",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657592/WhatsApp_Image_2026-02-09_at_5.01.14_PM_2_lenwlh.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657592/WhatsApp_Image_2026-02-09_at_5.01.14_PM_3_s4hqlc.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "christian-hoodie-stitched",
+      "name": "Christian Hoodie (Stitched)",
+      "category": "Hoodies",
+      "priceTRY": 2500,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657593/WhatsApp_Image_2026-02-09_at_5.01.14_PM_1_ug2qqu.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657593/WhatsApp_Image_2026-02-09_at_5.01.14_PM_kyuuwm.jpg"
+      ],
+      "badges": ["New", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "berserk-anime-hoodie",
+      "name": "Berserk Anime Hoodie",
+      "category": "Hoodies",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657597/WhatsApp_Image_2026-02-09_at_5.01.15_PM_7_f9hzns.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "griffith-berserk-hoodie",
+      "name": "Griffith Berserk Hoodie (Under Sleeves)",
+      "category": "Hoodies",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657596/WhatsApp_Image_2026-02-09_at_5.01.15_PM_6_stfd3e.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657593/WhatsApp_Image_2026-02-09_at_5.01.15_PM_1_iwithz.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "dark-japanese-hoodie",
+      "name": "Dark Japanese Hoodie",
+      "category": "Hoodies",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657595/WhatsApp_Image_2026-02-09_at_5.01.15_PM_5_mveibp.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657596/WhatsApp_Image_2026-02-09_at_5.01.15_PM_4_axjdxv.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "christian-hoodie-darkish",
+      "name": "Christian Hoodie (Dark)",
+      "category": "Hoodies",
+      "priceTRY": 2500,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657593/WhatsApp_Image_2026-02-09_at_5.01.15_PM_2_pomkvv.jpg",
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657601/WhatsApp_Image_2026-02-09_at_5.01.15_PM_3_ogtiyp.jpg"
+      ],
+      "badges": ["New", "Limited"],
+      "featured": false
+    },
+    {
+      "id": "dark-souls-hoodie",
+      "name": "Dark Souls Hoodie",
+      "category": "Hoodies",
+      "priceTRY": 2000,
+      "compareAtTRY": 3000,
+      "images": [
+        "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657601/WhatsApp_Image_2026-02-09_at_5.01.15_PM_8_wsdblk.jpg"
+      ],
+      "badges": ["New", "Deal", "Limited"],
       "featured": false
     }
   ],
   "config": {
-    "announcement": "MEGA SALE - UP TO 50% OFF!",
+    "announcement": "NEW COLLECTION - ORDER VIA INSTAGRAM",
     "usdRate": 35
   }
 }

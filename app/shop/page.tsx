@@ -35,10 +35,11 @@ export default function ShopPage() {
             >
               <div className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-black/30">
                 <Image
-                  src={p.image || "/favicon.ico"}
+                  src={(p.image || p.images?.[0]) || "/favicon.ico"}
                   alt={p.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   unoptimized
                 />
                 {p.badges && p.badges.length > 0 && (

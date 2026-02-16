@@ -4,29 +4,23 @@ export type Product = {
   id: string;
   name: string;
   category: Category;
-  priceTRY: number;          // ALWAYS from store-data.json - NEVER from code
-  compareAtTRY?: number;     // ALWAYS from store-data.json - NEVER from code
+  priceTRY: number;
+  compareAtTRY?: number;
   description?: string;
-  image?: string;            // single image (from store-data.json)
-  images?: string[];         // array of images (backwards compat)
+  image?: string;
+  images?: string[];
   badges?: Array<"New" | "Free Shipping" | "Deal" | "Limited">;
   featured?: boolean;
 };
 
-// IMPORTANT: These are PLACEHOLDER values ONLY for TypeScript compilation
-// REAL prices are ONLY in store-data.json - never in code
-const PLACEHOLDER_PRICE = 0; // Placeholder - real prices in store-data.json
-const PLACEHOLDER_COMPARE = 0; // Placeholder - real prices in store-data.json
+const PLACEHOLDER_PRICE = 0;
+const PLACEHOLDER_COMPARE = 0;
 
 function makeProduct(p: Omit<Product, "compareAtTRY">): Product {
-  // Return as-is with placeholder prices
-  // Prices will be overwritten from store-data.json at runtime
   return { ...p, priceTRY: PLACEHOLDER_PRICE, compareAtTRY: PLACEHOLDER_COMPARE };
 }
 
 export const products: Product[] = [
-  // IMPORTANT: These products are ONLY for file structure and images
-  // Prices (priceTRY, compareAtTRY) must ALWAYS come from store-data.json
   makeProduct({
     id: "green-graphic-hoodie",
     name: "Emerald Graphic Hoodie",

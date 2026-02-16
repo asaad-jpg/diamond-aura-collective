@@ -114,13 +114,11 @@ async function sendDiscordNotification(changes: PriceChange[], isAnnouncement?: 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ embeds }),
     });
-    console.log("✅ Sent Discord price notification");
   } catch (error) {
-    console.warn("⚠️  Failed to send Discord notification:", (error as Error).message);
+    // discord failed, whatever
   }
 }
 
-// Non-blocking async git push
 function asyncGitPush() {
   try {
     const child = spawn("git", ["push", "origin", "main"], {
@@ -130,40 +128,33 @@ function asyncGitPush() {
     });
     child.unref();
   } catch (e) {
-    // Silently fail
+    // fail silently
   }
 }
 
-// READ - Load from JSON file ONLY
-// CRITICAL: Never use seedState for pricing - only use store-data.json
 export async function getState(): Promise<StoreState> {
   if (!existsSync(STORE_FILE)) {
-    console.error("❌ CRITICAL: store-data.json not found! Using placeholder seed data.");
+    console.error("store-data.json not found");
     return seedState;
   }
 
   try {
     const buffer = readFileSync(STORE_FILE);
-    const jsonString = buffer.toString("utf-8").replace(/^\uFEFF/, ""); // Remove BOM
+    const jsonString = buffer.toString("utf-8").replace(/^\uFEFF/, "");
     const data = JSON.parse(jsonString) as unknown;
 
     if (isStoreState(data)) {
-      console.log("✅ Loaded pricing from store-data.json");
       return data;
     }
 
-    console.error("❌ store-data.json is invalid format, using seed");
     return seedState;
   } catch (error) {
-    console.error("❌ Failed to read store-data.json:", (error as Error).message);
     return seedState;
   }
 }
 
-// WRITE - Save to file immediately with Discord notifications
 export async function setState(next: StoreState): Promise<void> {
   try {
-    // Get current state to detect changes
     let oldState = seedState;
     if (existsSync(STORE_FILE)) {
       try {
@@ -185,7 +176,6 @@ export async function setState(next: StoreState): Promise<void> {
     // Write file immediately
     const jsonContent = JSON.stringify(next, null, 2) + "\n";
     writeFileSync(STORE_FILE, jsonContent, "utf-8");
-    console.log("✅ Saved to store-data.json");
 
     // Send Discord notifications
     if (priceChanges.length > 0) {
@@ -203,13 +193,11 @@ export async function setState(next: StoreState): Promise<void> {
         cwd: process.cwd(),
         stdio: "pipe",
       });
-      console.log("🚀 Committing to GitHub...");
       asyncGitPush();
     } catch (gitError) {
-      console.warn("⚠️  Git commit skipped - likely no changes");
+      // prob no changes
     }
   } catch (error) {
-    console.error("❌ Failed to save:", (error as Error).message);
     throw new Error("Could not save prices");
   }
 }

@@ -36,13 +36,15 @@ export default function CartDrawer({
       {open && (
         <>
           {/* Overlay */}
-          <motion.button
-            aria-label="Close cart overlay"
+          <motion.div
             className="fixed inset-0 z-40 bg-black/60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
+            role="button"
+            tabIndex={0}
+            aria-label="Close cart overlay"
           />
 
           {/* Drawer */}

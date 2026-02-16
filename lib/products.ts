@@ -188,7 +188,7 @@ export const products: Product[] = [
     priceTRY: PLACEHOLDER_PRICE,
     description: "Premium hoodie",
     images: [
-      "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657596/WhatsApp_Image_2026-02-09_at_5.01.15_PM_6_stfd3e.jpg"
+      "https://res.cloudinary.com/dldyaqnbq/image/upload/v1770657598/WhatsApp_Image_2026-02-09_at_5.01.15_PM_w3xnbm.jpg"
     ],
     badges: ["New", "Deal", "Limited"],
   }),
